@@ -1,9 +1,20 @@
-name = ""
+from time import sleep
 
+name = ""
 while name == "":
     name = input("enter your name: ").strip()
     if not name :
         print("please enter your name before!!")
+def exit_program():
+    print('program akan di hentikan')
+    sleep(1)
+    print('3...')
+    sleep(1)
+    print('2...')
+    sleep(1)
+    print('1...')
+    print('program dihentikan')
+    exit()
 
 def welcome():
     style = "*" * (len(name)+6)
@@ -11,25 +22,36 @@ def welcome():
     print (f"** {name} ** ")
     print (style)
 
+
 welcome()
 
-number1 = int(input("Enter first number: "))
-opr = input("Enter operator: +, -, *, /: ")
-number2 = int(input("Enter second number: "))
+def calculate(a, operator, b):
+    if operator == "+":
+        return a + b
+    elif operator == "-":
+        return a - b
+    elif operator == "*":
+        return a * b
+    elif operator == "/":
+        if b == 0:
+            raise ZeroDivisionError("Division by zero is not allowed.")
+        return a / b    
+    else:
+        raise ValueError("Invalid operator. Please use +, -, *, or /.")
 
-if opr == "+":
-    print (number1 + number2)
-elif opr == "-":
-    print (number1 - number2)
-elif opr == "*":
-    print (number1 * number2)
-elif opr == "/":
-    while True:
-        number2 = int(input("enter second number not (0): "))
-    
-        if number2 != 0 :
-            print(number1 / number1)
-            break
-        else:
-            print ("ERROR : Division by zero,are you dumb?, please retry")
-    
+
+while True:
+    try:
+        number1 = int(input('Enter frist number: '))
+        opt = input('Enter operator(+, *. -. /): ')
+        number2 = int(input('Enter second number: '))
+
+        result = calculate(number1, opt, number2)
+        print('hasil: ', result)
+        break
+
+    except ValueError as e:
+        print('Error ;', e)
+    except ZeroDivisionError as e:
+        print('Error: ', e)
+
