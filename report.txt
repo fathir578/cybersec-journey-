@@ -1,0 +1,4 @@
+Total errors: 1
+Total warnings: 4
+Total failed login attempts: 3
+Alert: Multiple failed login attempts detected!
