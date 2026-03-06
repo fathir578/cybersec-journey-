@@ -3,3 +3,5 @@ hasil_scan.txt
 report.txt
 sample.log
 *.txt
+__pycache__/
+*.pyc
