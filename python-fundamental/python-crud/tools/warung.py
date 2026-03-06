@@ -12,10 +12,10 @@ def add():
 def cek_barang():
     items = db.fetch_item()
     for item in items:
-        kode_barang = item [1]
-        nama_barang = item [2]
-        harga_barang = item [3]
-        stok_barang = item [4]
+        kode_barang = item [0]
+        nama_barang = item [1]
+        harga_barang = item [2]
+        stok_barang = item [3]
         print(f'''
 kode barang: {kode_barang}
 {nama_barang}| Rp {harga_barang}
