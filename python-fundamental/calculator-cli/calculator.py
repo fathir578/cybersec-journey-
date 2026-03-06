@@ -39,19 +39,26 @@ def calculate(a, operator, b):
     else:
         raise ValueError("Invalid operator. Please use +, -, *, or /.")
 
+def inpurt_number():
+    while True:
+        try:
+            number1 = int(input('Enter frist number: '))
+            opt = input('Enter operator(+, *. -. /): ')
+            number2 = int(input('Enter second number: '))
+
+            result = calculate(number1, opt, number2)
+            print('hasil: ', result)
+            break
+
+        except ValueError as e:
+            print('Error ;', e)
+        except ZeroDivisionError as e:
+            print('Error: ', e)
+inpurt_number()
 
 while True:
-    try:
-        number1 = int(input('Enter frist number: '))
-        opt = input('Enter operator(+, *. -. /): ')
-        number2 = int(input('Enter second number: '))
-
-        result = calculate(number1, opt, number2)
-        print('hasil: ', result)
-        break
-
-    except ValueError as e:
-        print('Error ;', e)
-    except ZeroDivisionError as e:
-        print('Error: ', e)
-
+    pertanyaan = input('apakah anda ingin menghitung lagi? (y/n): ')
+    if pertanyaan.lower() == 'y':
+        inpurt_number()
+    else:    
+        exit_program()
