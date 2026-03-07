@@ -16,12 +16,14 @@ with open ('sample.log', 'r') as file, open('report.txt', 'a') as report:
                 if "Failed login attempt" in line:
                     count_failed += 1
                     report.write(line.strip() + "\n")
+
     report.write(f"Total errors: {count_error}\n")
     report.write(f"Total warnings: {count_warning}\n")
     report.write(f"Total failed login attempts: {count_failed}\n")
     print(f"Total errors: {count_error}")
     print(f"Total warnings: {count_warning}")
     print(f"Total failed login attempts: {count_failed}")
+
     if count_failed >= 3:
         alert = "Alert: Multiple failed login attempts detected!"
         print(f"\033[91m{alert}\033[0m")
