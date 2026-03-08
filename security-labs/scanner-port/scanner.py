@@ -1,12 +1,15 @@
 import socket
 import time
-
+from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
+lock = threading.Lock()
 def scan_port(ip, port):
     try:
         s = socket.socket()
         s.settimeout(0.5)
         if s.connect_ex((ip, port)) == 0:
-            return True
+            return port
         s.close()
     except socket.error: 
         return False
@@ -15,7 +18,6 @@ def scan_port(ip, port):
     
 def main():
     target_ip = input("Enter target IP: ")
-    print(f"Scanning {target_ip} for open ports...")
     start_time = time.time()
     nama_file = "hasil_scanner.txt"
     while True:
@@ -35,19 +37,26 @@ def main():
             print("\033[31mERROR: Invalid input. Please enter numeric values for ports.\033[0m")
             
     with open(nama_file, 'a') as file:
-        for port in range(port_awal, port_akhir + 1):
-            if scan_port(target_ip, port):
-                try:
-                    service = socket.getservbyport(port, 'tcp')
-                except (OSError, socket.error):
-                    service = "Unknown"
-                print(f"\033[32mPort {port} is open. Service: {service}\033[0m")
-
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        thread_count = min(100, port_akhir - port_awal + 1)
+        print(f"\033[36mScanning {target_ip} for open ports...\033[0m")
+        print(f"\033[33mScan started at: {timestamp}\033[0m")
         file.write("" + "-"*30 + "\n")
-        file.write(f"Scan results for {target_ip} (Ports {port_awal}-{port_akhir}):\n")
+        file.write(f"Scan results for {target_ip} (Ports {port_awal}-{port_akhir}): {timestamp}\n")
+        with ThreadPoolExecutor(max_workers=thread_count) as executor:
+            futures = [executor.submit(scan_port, target_ip, port) for port in range(port_awal, port_akhir + 1)]
+            for future in as_completed(futures):
+                port = future.result()
+                if port:
+                    try:
+                        service = socket.getservbyport(port, 'tcp')
+                    except (OSError, socket.error):
+                        service = "Unknown"
+                    print(f"\033[32mPort {port} is open. Service: {service}\033[0m")
+                    with lock:
+                        file.write(f"Port {port} is open. Service: {service}\n")     
         elapsed_time = time.time() - start_time
         print(f"\nScan completed in {elapsed_time:.2f} seconds.")
-        file.write(f"Port {port} is open. Service: {service}\n")
         file.write(f"Scan completed in {elapsed_time:.2f} seconds.\n")
         
 main()
