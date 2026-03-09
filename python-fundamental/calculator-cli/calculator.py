@@ -14,6 +14,7 @@ def exit_program():
     sleep(1)
     print('1...')
     print('program dihentikan')
+    print('bye!!')
     exit()
 
 def welcome():
@@ -58,6 +59,12 @@ inpurt_number()
 
 while True:
     pertanyaan = input('apakah anda ingin menghitung lagi? (y/n): ')
+    try:
+        if pertanyaan.lower() not in ['y', 'n']:
+            raise ValueError("Invalid input. Please enter 'y' for yes or 'n' for no.")
+    except ValueError as e:
+        print('Error: ', e)
+        continue
     if pertanyaan.lower() == 'y':
         inpurt_number()
     else:    
